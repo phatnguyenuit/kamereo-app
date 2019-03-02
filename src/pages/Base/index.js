@@ -1,77 +1,28 @@
-import * as themes from "../../config/themes";
-
 import React, { Component } from "react";
 
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import AppBar from "@material-ui/core/AppBar";
 import Badge from "@material-ui/core/Badge";
+import ChangeTheme from "../../components/ChangeTheme";
+import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
 import MailIcon from "@material-ui/icons/Mail";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
-import { RootConsumer } from "../../providers/RootProvider";
-import Select from "@material-ui/core/Select";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import SideBar from "../../components/SideBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import styles from "./themeStyle";
 import withRoot from "../../withRoot";
 import { withStyles } from "@material-ui/core/styles";
-
-const themeSelection = Object.keys(themes);
-
-const styles = theme => ({
-  root: {
-    width: "100%",
-    flexGrow: 1,
-    wordWrap: "anywhere"
-  },
-  grow: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
-  },
-  title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block"
-    }
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex"
-    }
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none"
-    }
-  },
-  paper: {
-    padding: theme.spacing.unit * 2,
-    color: theme.palette.text.secondary
-  },
-  buttonDark: {
-    backgroundColor: theme.palette.secondary.main
-  },
-  mt5: {
-    marginTop: "5px"
-  }
-});
 
 class BaseApp extends Component {
   constructor(props) {
     super(props);
-    const { theme, themeName } = this.props;
     this.state = {
-      themeName,
-      theme,
       anchorEl: null,
       mobileMoreAnchorEl: null
     };
@@ -102,7 +53,7 @@ class BaseApp extends Component {
   };
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl, themeName } = this.state;
+    const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes, children } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -153,23 +104,9 @@ class BaseApp extends Component {
       </Menu>
     );
 
-    const changeThemeSection = (
-      <Select
-        value={themeName}
-        onChange={this.handleChange}
-        input={<Input name="themeName" id="age-helper" />}
-      >
-        {themeSelection.map((themeValue, index) => (
-          <MenuItem key={`theme-${index}`} value={themeValue}>
-            {themeValue}
-          </MenuItem>
-        ))}
-      </Select>
-    );
-
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="sticky">
           <Toolbar>
             <Typography
               className={classes.title}
@@ -180,7 +117,7 @@ class BaseApp extends Component {
               KAMEREO
             </Typography>
             <div className={classes.grow} />
-            {changeThemeSection}
+            <ChangeTheme />
             <div className={classes.sectionDesktop}>
               <IconButton color="inherit">
                 <Badge badgeContent={0} color="secondary">
@@ -214,7 +151,14 @@ class BaseApp extends Component {
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
-        {children}
+        <Grid container spacing={24}>
+          <Grid item xs={2}>
+            <SideBar classes={classes} />
+          </Grid>
+          <Grid item xs={10}>
+            {children}
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -224,12 +168,4 @@ BaseApp.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const RootWrapped = withRoot(withStyles(styles)(BaseApp));
-
-const ContextWrapped = props => (
-  <RootConsumer>
-    {values => <RootWrapped {...props} {...values} />}
-  </RootConsumer>
-);
-
-export default ContextWrapped;
+export default withRoot(withStyles(styles)(BaseApp));

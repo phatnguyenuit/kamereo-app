@@ -9,9 +9,11 @@ import RootProvider from "./providers/RootProvider";
 import Routes from "./Router";
 import store from "./redux/configStore";
 
+document.title = "KAMEREO HOME PAGE";
+
 ReactDOM.render(
   <Provider store={store}>
-    <RootProvider themeName="PurpleTheme">
+    <RootProvider themeName="GreenTheme">
       <Routes />
     </RootProvider>
   </Provider>,
