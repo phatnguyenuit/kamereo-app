@@ -8,11 +8,14 @@ import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
+import { Link } from "react-router-dom";
 import MenuItem from "@material-ui/core/MenuItem";
 import PropTypes from "prop-types";
 import Select from "@material-ui/core/Select";
 import styles from "./themeStyle";
 import { withStyles } from "@material-ui/core/styles";
+
+const viewStoreLink = props => <Link to="/" {...props} />;
 
 class EditBuyer extends Component {
   constructor(props) {
@@ -43,7 +46,7 @@ class EditBuyer extends Component {
       this.setState({
         disabled: false,
         file: file,
-        imagePreviewUrl: reader.result
+        imageUrl: reader.result
       });
     };
 
@@ -233,7 +236,7 @@ class EditBuyer extends Component {
                   </Button>
                 </Grid>
                 <Grid item xs={10}>
-                  <Button color="secondary" fullWidth>
+                  <Button color="secondary" component={viewStoreLink} fullWidth>
                     Cancel
                   </Button>
                 </Grid>

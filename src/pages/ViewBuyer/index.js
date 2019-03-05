@@ -3,10 +3,13 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
+import { Link } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
 import styles from "./themeStyle";
 import { withStyles } from "@material-ui/core/styles";
+
+const editLink = props => <Link to="/edit" {...props} />;
 
 class ViewBuyer extends Component {
   render() {
@@ -83,7 +86,11 @@ class ViewBuyer extends Component {
                   </Grid>
                 </Grid>
               </div>
-              <Button className={classes.buttonDark} fullWidth>
+              <Button
+                className={classes.buttonDark}
+                component={editLink}
+                fullWidth
+              >
                 Edit
               </Button>
             </Paper>
